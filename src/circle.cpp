@@ -17,6 +17,21 @@ void Circle::resolveStaticCollision(Circle &other)
     other.position = Vector2Add(other.position, moveAmount);
 }
 
+void Circle::resolveDynamicCollision(Circle &other)
+{
+    float mass = radius * 10.0f;
+    float otherMass = other.radius * 10.0f;
+
+    Vector2 deltaPosition = Vector2Subtract(position, other.position);
+    Vector2 normal = Vector2Normalize(deltaPosition);
+
+    Vector2 deltaVelocity = Vector2Subtract(velocity, other.velocity);
+    float momentum = 2.0f * Vector2DotProduct(normal, deltaVelocity) / (mass + otherMass);
+
+    velocity = Vector2Subtract(velocity, Vector2Scale(normal, momentum * otherMass));
+    other.velocity = Vector2Add(other.velocity, Vector2Scale(normal, momentum * mass));
+}
+
 void Circle::draw()
 {
     DrawCircleLines(position.x, position.y, radius, GRAY);

@@ -17,6 +17,7 @@ public:
     };
 
     void resolveStaticCollision(Circle &other);
+    void resolveDynamicCollision(Circle &other);
 
     void draw();
 };

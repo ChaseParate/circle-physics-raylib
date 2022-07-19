@@ -115,6 +115,15 @@ int main()
             }
         }
 
+        // Dynamic Collisions
+        for (auto &collidingPair : collidingPairs)
+        {
+            Circle &c1 = collidingPair.first;
+            Circle &c2 = collidingPair.second;
+
+            c1.resolveDynamicCollision(c2);
+        }
+
         // Draw
         BeginDrawing();
         ClearBackground(RAYWHITE);
