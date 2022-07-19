@@ -44,7 +44,7 @@ int main()
             selectedCircleID = -1;
             for (auto &circle : circles)
             {
-                if (!circle.collidePoint(mousePosition))
+                if (!CheckCollisionPointCircle(mousePosition, circle.position, circle.radius))
                     continue;
 
                 selectedCircleID = circle.id;
@@ -69,6 +69,10 @@ int main()
             for (unsigned int j = i + 1; j < numCircles; j++)
             {
                 Circle &other = circles[j];
+
+                if (!CheckCollisionCircles(circle.position, circle.radius, other.position, other.radius))
+                    continue;
+
                 circle.resolveStaticCollision(other);
             }
         }

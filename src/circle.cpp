@@ -3,23 +3,8 @@
 
 #include "circle.hpp"
 
-bool Circle::collidePoint(Vector2 point)
-{
-    float distance = Vector2Distance(position, point);
-    return distance <= radius;
-}
-
-bool Circle::collideCircle(Circle &other)
-{
-    float distance = Vector2Distance(position, other.position);
-    return distance <= radius + other.radius;
-}
-
 void Circle::resolveStaticCollision(Circle &other)
 {
-    if (id == other.id || !collideCircle(other))
-        return;
-
     float distance = Vector2Distance(position, other.position);
     float overlap = (distance - radius - other.radius) / 2;
     // std::printf("IDs: %d, %d\tRadii: %.1f, %.1f\tDistance: %.2f \tOverlap: %.2f\n",

@@ -10,8 +10,6 @@ public:
 
     Circle(unsigned int id, Vector2 position, float radius) : id{id}, position{position}, radius{radius} {};
 
-    bool collidePoint(Vector2 point);
-    bool collideCircle(Circle &other);
     void resolveStaticCollision(Circle &other);
 
     void draw();
