@@ -1,4 +1,5 @@
 #include <array>
+#include <cstdio>
 
 #include <raylib.h>
 #include <raymath.h>
@@ -38,6 +39,28 @@ int main()
     while (!WindowShouldClose())
     {
         // Update
+        for (auto &circle : circles)
+        {
+            for (auto &other : circles)
+            {
+                if (circle.id == other.id)
+                    continue;
+
+                float distance = Vector2Distance(circle.position, other.position);
+                if (distance >= circle.radius + other.radius)
+                    continue;
+
+                float overlap = (distance - circle.radius - other.radius) / 2;
+                // std::printf("IDs: %d, %d\tRadii: %.1f, %.1f\tDistance: %.2f \tOverlap: %.2f\n",
+                //             circle.id, other.id, circle.radius, other.radius, distance, overlap);
+
+                Vector2 deltaPosition = Vector2Subtract(circle.position, other.position);
+                Vector2 moveAmount = Vector2Scale(deltaPosition, overlap / distance);
+
+                circle.position = Vector2Subtract(circle.position, moveAmount);
+                other.position = Vector2Add(other.position, moveAmount);
+            }
+        }
 
         // Draw
         BeginDrawing();
