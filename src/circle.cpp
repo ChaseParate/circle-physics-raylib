@@ -20,6 +20,7 @@ void Circle::resolveStaticCollision(Circle &other)
 void Circle::draw()
 {
     DrawCircleLines(position.x, position.y, radius, GRAY);
+    DrawLineV(position, Vector2Add(position, Vector2Scale(Vector2Normalize(velocity), radius)), GRAY);
 
     unsigned int fontSize = radius;
     const char *text = TextFormat("%d", id);
