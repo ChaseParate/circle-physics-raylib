@@ -63,10 +63,12 @@ int main()
         }
 
         // Static Collision
-        for (auto &circle : circles)
+        for (unsigned int i = 0; i < numCircles - 1; i++)
         {
-            for (auto &other : circles)
+            Circle &circle = circles[i];
+            for (unsigned int j = i + 1; j < numCircles; j++)
             {
+                Circle &other = circles[j];
                 circle.resolveStaticCollision(other);
             }
         }
