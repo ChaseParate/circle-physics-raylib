@@ -50,7 +50,7 @@ int main()
             for (auto &circle : circles)
             {
                 float distance = Vector2Distance(circle.position, mousePosition);
-                if (distance > circle.radius * 2)
+                if (distance > circle.radius)
                     continue;
 
                 selectedCircleID = circle.id;
