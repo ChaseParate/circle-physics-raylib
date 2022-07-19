@@ -7,8 +7,6 @@ void Circle::resolveStaticCollision(Circle &other)
 {
     float distance = Vector2Distance(position, other.position);
     float overlap = (distance - radius - other.radius) / 2;
-    // std::printf("IDs: %d, %d\tRadii: %.1f, %.1f\tDistance: %.2f \tOverlap: %.2f\n",
-    //             id, other.id, radius, other.radius, distance, overlap);
 
     Vector2 deltaPosition = Vector2Subtract(position, other.position);
     Vector2 moveAmount = Vector2Scale(deltaPosition, overlap / distance);

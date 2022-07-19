@@ -1,4 +1,3 @@
-#include <cstdio>
 #include <vector>
 #include <utility>
 
@@ -13,7 +12,7 @@ int main()
     const unsigned int windowHeight = 600;
     const unsigned int targetFPS = 60;
 
-    InitWindow(windowWidth, windowHeight, "raylib Template");
+    InitWindow(windowWidth, windowHeight, "Circle Physics");
     SetTargetFPS(targetFPS);
 
     const unsigned int numCircles = 10;
