@@ -1,5 +1,6 @@
 #include <cstdio>
 #include <vector>
+#include <utility>
 
 #include <raylib.h>
 #include <raymath.h>
@@ -19,8 +20,6 @@ int main()
     std::vector<Circle> circles;
     circles.reserve(numCircles);
 
-    int selectedCircleID = -1;
-
     for (unsigned int i = 0; i < numCircles; i++)
     {
         float radius = GetRandomValue(25, 100);
@@ -31,6 +30,8 @@ int main()
 
         circles.push_back(circle);
     }
+
+    int selectedCircleID = -1;
 
     while (!WindowShouldClose())
     {
@@ -62,6 +63,8 @@ int main()
             circle.position = GetMousePosition();
         }
 
+        std::vector<std::pair<Circle &, Circle &>> collidingPairs;
+
         // Static Collision
         for (unsigned int i = 0; i < numCircles - 1; i++)
         {
@@ -73,6 +76,7 @@ int main()
                 if (!CheckCollisionCircles(circle.position, circle.radius, other.position, other.radius))
                     continue;
 
+                collidingPairs.push_back({circle, other});
                 circle.resolveStaticCollision(other);
             }
         }
@@ -84,6 +88,11 @@ int main()
         for (auto &circle : circles)
         {
             circle.draw();
+        }
+
+        for (auto &collidingPair : collidingPairs)
+        {
+            DrawLineV(collidingPair.first.position, collidingPair.second.position, RED);
         }
 
         EndDrawing();
