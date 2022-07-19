@@ -1,5 +1,6 @@
 #include <array>
 #include <cstdio>
+#include <memory>
 
 #include <raylib.h>
 #include <raymath.h>
@@ -24,6 +25,8 @@ int main()
     const unsigned int numCircles = 10;
     std::array<Circle, numCircles> circles;
 
+    int selectedCircleID = -1;
+
     for (unsigned int i = 0; i < numCircles; i++)
     {
         Circle circle;
@@ -39,6 +42,32 @@ int main()
     while (!WindowShouldClose())
     {
         // Update
+        if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT))
+        {
+            Vector2 mousePosition = GetMousePosition();
+
+            selectedCircleID = -1;
+            for (auto &circle : circles)
+            {
+                float distance = Vector2Distance(circle.position, mousePosition);
+                if (distance > circle.radius * 2)
+                    continue;
+
+                selectedCircleID = circle.id;
+                break;
+            }
+        }
+        else if (IsMouseButtonReleased(MOUSE_BUTTON_LEFT))
+        {
+            selectedCircleID = -1;
+        }
+
+        if (selectedCircleID >= 0)
+        {
+            Circle &circle = circles[selectedCircleID];
+            circle.position = GetMousePosition();
+        }
+
         for (auto &circle : circles)
         {
             for (auto &other : circles)
