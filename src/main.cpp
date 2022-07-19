@@ -26,7 +26,7 @@ int main()
         Vector2 position = {
             static_cast<float>(GetRandomValue(radius, windowWidth - radius)),
             static_cast<float>(GetRandomValue(radius, windowHeight - radius))};
-        Circle circle = Circle(i, position, radius);
+        Circle circle = Circle(i, radius, position);
 
         circles.push_back(circle);
     }
@@ -36,6 +36,7 @@ int main()
     while (!WindowShouldClose())
     {
         // Update
+        float deltaTime = GetFrameTime();
 
         // Mouse Controls
         if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT))
@@ -61,6 +62,27 @@ int main()
         {
             Circle &circle = circles[selectedCircleID];
             circle.position = GetMousePosition();
+        }
+
+        // Update Circle Position
+        for (Circle &circle : circles)
+        {
+            circle.velocity = Vector2Add(circle.velocity, Vector2Scale(circle.acceleration, deltaTime));
+            circle.position = Vector2Add(circle.position, Vector2Scale(circle.velocity, deltaTime));
+
+            // Wrap Around the Window Edges
+            if (circle.position.x < 0)
+                circle.position = Vector2Add(circle.position, {windowWidth, 0.0f});
+            if (circle.position.x >= windowWidth)
+                circle.position = Vector2Subtract(circle.position, {windowWidth, 0.0f});
+            if (circle.position.y < 0)
+                circle.position = Vector2Add(circle.position, {0.0f, windowHeight});
+            if (circle.position.y >= windowHeight)
+                circle.position = Vector2Subtract(circle.position, {0.0f, windowHeight});
+
+            float velocityMagnitude = Vector2Length(circle.velocity);
+            if (velocityMagnitude < 0.1f)
+                circle.velocity = Vector2Zero();
         }
 
         std::vector<std::pair<Circle &, Circle &>> collidingPairs;

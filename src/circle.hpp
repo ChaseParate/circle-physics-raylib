@@ -5,10 +5,16 @@ class Circle
 {
 public:
     unsigned int id;
-    Vector2 position;
     float radius;
+    Vector2 position;
+    Vector2 velocity;
+    Vector2 acceleration;
 
-    Circle(unsigned int id, Vector2 position, float radius) : id{id}, position{position}, radius{radius} {};
+    Circle(unsigned int id, float radius, Vector2 position) : id{id}, radius{radius}, position{position}
+    {
+        velocity = Vector2Zero();
+        acceleration = Vector2Zero();
+    };
 
     void resolveStaticCollision(Circle &other);
 
