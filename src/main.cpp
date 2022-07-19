@@ -78,6 +78,7 @@ int main()
         // Update Circle Position
         for (Circle &circle : circles)
         {
+            circle.acceleration = Vector2Scale(circle.velocity, -0.8f);
             circle.velocity = Vector2Add(circle.velocity, Vector2Scale(circle.acceleration, deltaTime));
             circle.position = Vector2Add(circle.position, Vector2Scale(circle.velocity, deltaTime));
 
