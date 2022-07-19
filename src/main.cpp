@@ -5,6 +5,8 @@
 
 struct Circle
 {
+    unsigned int id;
+
     Vector2 position;
     float radius;
 };
@@ -24,6 +26,7 @@ int main()
     for (unsigned int i = 0; i < numCircles; i++)
     {
         Circle circle;
+        circle.id = i;
         circle.radius = static_cast<float>(GetRandomValue(25, 100));
         circle.position = {
             static_cast<float>(GetRandomValue(circle.radius, windowWidth - circle.radius)),
@@ -43,6 +46,16 @@ int main()
         for (auto &circle : circles)
         {
             DrawCircleLines(circle.position.x, circle.position.y, circle.radius, GRAY);
+
+            unsigned int fontSize = circle.radius;
+            const char *text = TextFormat("%d", circle.id);
+            unsigned int textWidth = MeasureText(text, fontSize);
+
+            DrawText(text,
+                     circle.position.x - (textWidth / 2),
+                     circle.position.y - (fontSize / 2),
+                     fontSize,
+                     GRAY);
         }
 
         EndDrawing();
