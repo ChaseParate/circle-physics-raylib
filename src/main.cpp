@@ -37,12 +37,11 @@ int main()
     {
         // Update
         float deltaTime = GetFrameTime();
+        Vector2 mousePosition = GetMousePosition();
 
-        // Mouse Controls
-        if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT))
+        // Select Circle
+        if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT) || IsMouseButtonPressed(MOUSE_BUTTON_RIGHT))
         {
-            Vector2 mousePosition = GetMousePosition();
-
             selectedCircleID = -1;
             for (auto &circle : circles)
             {
@@ -53,15 +52,27 @@ int main()
                 break;
             }
         }
-        else if (IsMouseButtonReleased(MOUSE_BUTTON_LEFT))
+
+        // Move Selected Circle
+        if (IsMouseButtonDown(MOUSE_BUTTON_LEFT) && selectedCircleID >= 0)
+        {
+            Circle &circle = circles[selectedCircleID];
+            circle.position = mousePosition;
+        }
+
+        // Release Moved Circle
+        if (IsMouseButtonReleased(MOUSE_BUTTON_LEFT))
         {
             selectedCircleID = -1;
         }
 
-        if (selectedCircleID >= 0)
+        // Launch Circle
+        if (IsMouseButtonReleased(MOUSE_BUTTON_RIGHT) && selectedCircleID >= 0)
         {
             Circle &circle = circles[selectedCircleID];
-            circle.position = GetMousePosition();
+            circle.velocity = Vector2Scale(Vector2Subtract(circle.position, mousePosition), 5.0f);
+
+            selectedCircleID = -1;
         }
 
         // Update Circle Position
@@ -115,6 +126,12 @@ int main()
         for (auto &collidingPair : collidingPairs)
         {
             DrawLineV(collidingPair.first.position, collidingPair.second.position, RED);
+        }
+
+        if (selectedCircleID >= 0)
+        {
+            Circle &circle = circles[selectedCircleID];
+            DrawLineV(circle.position, mousePosition, BLUE);
         }
 
         EndDrawing();
